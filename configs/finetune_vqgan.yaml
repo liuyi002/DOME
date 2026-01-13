@@ -1,0 +1,33 @@
+# VQGAN 微调配置 - 动漫数据集适配
+
+# 预训练权重路径
+ckpt_path: 'result/VQGAN-f8/model_2.ckpt'
+
+# 数据目录（会自动搜索 train/val 子目录下的图像）
+data_dir: 'datasets'
+
+# 输出目录
+output_dir: 'result/VQGAN-f8-anime_3'
+
+# 微调模式
+# - decoder_only: 只微调 Decoder + Codebook（推荐，显存友好）
+# - codebook_only: 只微调 Codebook（最快，效果有限）
+# - full: 全部微调（效果最好，需要更多显存和时间）
+finetune_mode: 'decoder_only'
+
+# 训练配置
+max_steps: 20000          # 训练步数（根据数据集大小调整）
+batch_size: 4             # 批次大小（根据显存调整）
+lr: 1.0e-5               # 学习率（微调用小学习率）
+
+# 损失权重
+l1_weight: 5.0           # L1 重建损失
+lpips_weight: 0.1        # LPIPS 感知损失
+codebook_weight: 0.25     # Codebook 量化损失
+
+# 设备
+device: 'cuda'
+
+# 评估和保存间隔
+eval_interval: 1000
+save_interval: 5000

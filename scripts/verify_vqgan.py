@@ -16,6 +16,7 @@ import sys
 import torch
 import torch.nn.functional as F
 import numpy as np
+import math
 from PIL import Image
 from pathlib import Path
 import torchvision.transforms as transforms
@@ -68,12 +69,15 @@ def load_vqgan(ckpt_path, device='cuda'):
 
 
 def compute_metrics(original, reconstructed):
-    """计算重建质量指标"""
+    """计算重建质量指标（修正的PSNR计算）"""
     # MSE
     mse = F.mse_loss(reconstructed, original).item()
     
-    # PSNR
-    psnr = 10 * np.log10(1.0 / mse) if mse > 0 else float('inf')
+    # PSNR（修正版）- data_range = 2.0 (从-1到1)
+    if mse < 1e-10:
+        psnr = 100.0  # 避免除以零
+    else:
+        psnr = 10 * math.log10(4.0 / mse)  # 4 = 2^2 (data_range^2)
     
     # L1
     l1 = F.l1_loss(reconstructed, original).item()

@@ -17,7 +17,6 @@ build/
 *.pkl
 *.pickle
 logs/
-results/
 checkpoints/
 wandb/
 *.log
@@ -33,13 +32,19 @@ Thumbs.db
 datasets/*/
 !datasets/*.py
 !datasets/__init__.py
+!datasets/thinplate
 
 # Configs and environment
-*.yaml
-!configs/
-environment.yml
+# *.yaml
+# !configs/
+# environment.yml
 
 # Temporary files
 *.tmp
 *.bak
 
+
+result/
+*.ckpt
+*.pth
+*.pt
